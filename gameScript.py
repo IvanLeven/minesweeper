@@ -3,71 +3,30 @@ import time
 import os
 
 
-def fieldPainter():
-    os.system("cls")
-    lowDigit = 0
-    highDigit = 10
-    print("      (0)  (1)  (2)  (3)  (4)  (5)  (6)  (7)  (8)  (9)")
-    print("      " + "     " * 10)
-    for j in range(1, 10 + 1):
-        print("(" + chr(64 + j) + ")", end="   ")
-        for i in range(lowDigit, highDigit):
-            print(gameField[i], end="  ")
-        print("\n")
-        lowDigit += 10
-        highDigit += 10
-
-
-def checker():
-    if gameFieldNumbers[Null[0] - i] == 0:
-        Null.append(Null[0] - i)
-        gameFieldNumbers[Null[0] - i] = "_"
-    elif gameFieldNumbers[Null[0] - i] == "_":
-        if gameField[Null[0] - 1] == "[?]":
-            countSafeCell -= 1
-        gameField[Null[0] - i] = f" {gameFieldNumbers[Null[0] - i]} "
-    else:
-        if gameField[Null[0] - 1] == "[?]":
-            countSafeCell -= 1
-        gameField[Null[0] - i] = f"/{gameFieldNumbers[Null[0] - i]}/"
-
-
-def title():
+def title():  # Титульник
     print('Ivan Leven Presents: "MineSweeper"')
     time.sleep(4)
 
 
-title()
+def cellPathGenerator():  # Генерация списка значений клеток
+    indexCounter = 0
+    for i in range(65, 74 + 1):
+        for k in range(10):
+            s = chr(i) + str(k)
+            indexDirectory[s] = indexCounter
+            indexCounter += 1
 
-quitGame = False  # Состояние игры
-win = True  # Проверка победы
-gameField = []  # Игровое поле
-bombs = []  # Проигрышные клетки
-gameFieldNumbers = []  # "Открытое игровое поле"
-indexDirectory = {}  # Хранилище значений клеток
-cell = ""  # Клетка
-countBombs = 0  # Счетчик бомб вокруг
-constantCheck = [-11, -10, -9, -1, 1, 9, 10, 11]  # Проверка клеток вокруг
 
-indexCounter = 0  # Генерация списка значений клеток
-for i in range(65, 74 + 1):
-    for k in range(10):
-        s = chr(i) + str(k)
-        indexDirectory[s] = indexCounter
-        indexCounter += 1
-while not quitGame:
-
-    bombs = []
-    gameField = ["[ ]"] * 100
-    gameFieldNumbers = [0] * 100
-
-    while len(bombs) != 12:  # Генератор бомб
+def bombGenerator():  # Генератор бомб
+    while len(bombs) != 12:
         number = random.randint(0, 99)
         if number in bombs:
             continue
         else:
             bombs.append(number)
 
+
+def gameFieldNumbersGenerator():  # Создает вторичное, открытое поле, с отмеченными числами, бомбами
     for p in range(100):
         if p not in bombs:
             if p % 10 == 9:
@@ -87,13 +46,69 @@ while not quitGame:
         else:
             gameFieldNumbers[p] = "*"
 
+
+def fieldPainter():  # Рисует игровое поле
+    os.system("cls")
+    lowDigit = 0
+    highDigit = 10
+    print("      (0)  (1)  (2)  (3)  (4)  (5)  (6)  (7)  (8)  (9)")
+    print("      " + "     " * 10)
+    for j in range(1, 10 + 1):
+        print("(" + chr(64 + j) + ")", end="   ")
+        for i in range(lowDigit, highDigit):
+            print(gameField[i], end="  ")
+        print("\n")
+        lowDigit += 10
+        highDigit += 10
+
+
+def checker():  # Элемент алгоритма Null
+    if gameFieldNumbers[Null[0] - i] == 0:
+        Null.append(Null[0] - i)
+        gameFieldNumbers[Null[0] - i] = "_"
+    elif gameFieldNumbers[Null[0] - i] == "_":
+        if gameField[Null[0] - 1] == "[?]":
+            countSafeCell -= 1
+        gameField[Null[0] - i] = f" {gameFieldNumbers[Null[0] - i]} "
+    else:
+        if gameField[Null[0] - 1] == "[?]":
+            countSafeCell -= 1
+        gameField[Null[0] - i] = f"/{gameFieldNumbers[Null[0] - i]}/"
+
+
+title()
+
+quitGame = False  # Состояние игры
+win = True  # Проверка победы
+gameField = []  # Игровое поле
+bombs = []  # Проигрышные клетки
+gameFieldNumbers = []  # Все номера клеток в начале игры генерируются и попадают сюда
+indexDirectory = {}  # Хранилище значений клеток
+cell = ""  # Клетка
+countBombs = 0  # Счетчик бомб вокруг
+constantCheck = [-11, -10, -9, -1, 1, 9, 10, 11]  # Проверка клеток вокруг
+
+cellPathGenerator()  # Создаем словарь значений для клеток (A0: 0, A1: 1, и т.д.)
+
+while not quitGame:
+    bombs = []
+    gameField = ["[ ]"] * 100
+    gameFieldNumbers = [0] * 100
+
+    bombGenerator()  # Генератор бомб
+
+    gameFieldNumbersGenerator()  # Поле данных
+
     countBombCell = 0
     countSafeCell = 0
 
     while win:  # Основной игровой цикл
+
         fieldPainter()
+
         if countBombCell == 12 and countSafeCell == 0 and "[ ]" not in gameField:
             break
+
         while True:
             print("Текущее количесвто бомб:", 12 - (countBombCell + countSafeCell))
             cell = input(" Введите номер клетки, например - E3\n (Отметить клетку - point, убрать метку - unpoint): ")
