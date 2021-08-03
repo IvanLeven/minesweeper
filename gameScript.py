@@ -33,7 +33,7 @@ def checker():
 
 
 def title():
-    print("Ivan Leven Presents: "MineSweeper")
+    print('Ivan Leven Presents: "MineSweeper"')
     time.sleep(4)
 
 
