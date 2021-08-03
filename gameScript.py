@@ -16,17 +16,6 @@ def fieldPainter():
         print("\n")
         lowDigit += 10
         highDigit += 10
-    # lowDigit = 0
-    # highDigit = 10
-    # print("( ) (0)  (1)  (2)  (3)  (4)  (5)  (6)  (7)  (8)  (9)")
-    # print("____________________________________________________")
-    # for j in range(1, 10 + 1):
-    #     print("(" + chr(64 + j) + ")", end="| ")
-    #     for i in range(lowDigit, highDigit):
-    #         print(gameFieldNumbers[i], end="  ")
-    #     print("\n")
-    #     lowDigit += 10
-    #     highDigit += 10
 
 
 def checker():
@@ -44,21 +33,8 @@ def checker():
 
 
 def title():
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print(" " * 8, "-" * 100)
-    print(" " * 55 + "AmatureEagle")
-    print(" " * 57 + "presents")
-    print("")
-    print(" " * 53 + "<< Minesweeper >>")
-    print(" " * 8, "-" * 100)
-    time.sleep(8)
+    print("Ivan Leven Presents: "MineSweeper")
+    time.sleep(4)
 
 
 title()
@@ -67,7 +43,7 @@ quitGame = False  # Состояние игры
 win = True  # Проверка победы
 gameField = []  # Игровое поле
 bombs = []  # Проигрышные клетки
-gameFieldNumbers = []
+gameFieldNumbers = []  # "Открытое игровое поле"
 indexDirectory = {}  # Хранилище значений клеток
 cell = ""  # Клетка
 countBombs = 0  # Счетчик бомб вокруг
@@ -91,7 +67,6 @@ while not quitGame:
             continue
         else:
             bombs.append(number)
-    # print(bombs)
 
     for p in range(100):
         if p not in bombs:
@@ -117,7 +92,6 @@ while not quitGame:
 
     while win:  # Основной игровой цикл
         fieldPainter()
-        # print(countSafeCell)
         if countBombCell == 12 and countSafeCell == 0 and "[ ]" not in gameField:
             break
         while True:
