@@ -27,6 +27,7 @@ def bombGenerator():  # Генератор бомб
 
 
 def gameFieldNumbersGenerator():  # Создает вторичное, открытое поле, с отмеченными числами, бомбами
+    countBombs = 0  # Счетчик бомб вокруг
     for p in range(100):
         if p not in bombs:
             if p % 10 == 9:
@@ -85,7 +86,6 @@ bombs = []  # Проигрышные клетки
 gameFieldNumbers = []  # Все номера клеток в начале игры генерируются и попадают сюда
 indexDirectory = {}  # Хранилище значений клеток
 cell = ""  # Клетка
-countBombs = 0  # Счетчик бомб вокруг
 constantCheck = [-11, -10, -9, -1, 1, 9, 10, 11]  # Проверка клеток вокруг
 
 cellPathGenerator()  # Создаем словарь значений для клеток (A0: 0, A1: 1, и т.д.)
