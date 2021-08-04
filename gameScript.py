@@ -27,7 +27,7 @@ def bombGenerator():  # Генератор бомб
 
 
 def gameFieldNumbersGenerator():  # Создает вторичное, открытое поле, с отмеченными числами, бомбами
-    countBombs = 0  # Счетчик бомб вокруг
+    countBombs = 0
     for p in range(100):
         if p not in bombs:
             if p % 10 == 9:
@@ -112,17 +112,17 @@ while not quitGame:
         while True:
             print("Текущее количесвто бомб:", 12 - (countBombCell + countSafeCell))
             cell = input(" Введите номер клетки, например - E3\n (Отметить клетку - point, убрать метку - unpoint): ")
-            if cell not in indexDirectory:
-                if cell[:5] == "point" and cell[5:7] in indexDirectory and gameField[indexDirectory[cell[5:7]]] != "[?]":
-                    gameField[indexDirectory[cell[5:7]]] = "[?]"
-                    if indexDirectory[cell[5:7]] in bombs:
+            if cell.upper() not in indexDirectory:
+                if cell[:5].upper() == "POINT" and cell[5:7].upper() in indexDirectory and gameField[indexDirectory[cell[5:7].upper()]] != "[?]":
+                    gameField[indexDirectory[cell[5:7].upper()]] = "[?]"
+                    if indexDirectory[cell[5:7].upper()] in bombs:
                         countBombCell += 1
                     else:
                         countSafeCell += 1
                     break
-                elif cell[:7] == "unpoint" and cell[7:9] in indexDirectory and gameField[indexDirectory[cell[7:9]]] == "[?]":
-                    gameField[indexDirectory[cell[7:9]]] = "[ ]"
-                    if indexDirectory[cell[7:9]] in bombs:
+                elif cell[:7].upper() == "UNPOINT" and cell[7:9].upper() in indexDirectory and gameField[indexDirectory[cell[7:9].upper()]] == "[?]":
+                    gameField[indexDirectory[cell[7:9].upper()]] = "[ ]"
+                    if indexDirectory[cell[7:9].upper()] in bombs:
                         countBombCell -= 1
                     else:
                         countSafeCell -= 1
@@ -131,11 +131,11 @@ while not quitGame:
                     print("Некорректно введен код клетки!")
                     time.sleep(1)
                     fieldPainter()
-            elif gameField[indexDirectory[cell]] != "[ ]" and gameField[indexDirectory[cell]] != "[?]":
+            elif gameField[indexDirectory[cell.upper()]] != "[ ]" and gameField[indexDirectory[cell.upper()]] != "[?]":
                 print("Эта клетка уже открыта! ")
                 time.sleep(1)
                 fieldPainter()
-            elif indexDirectory[cell] in bombs:
+            elif indexDirectory[cell.upper()] in bombs:
                 for bomb in bombs:
                     gameField[bomb] = "[#]"
                     for kaboom in range(1):
@@ -148,15 +148,15 @@ while not quitGame:
                 win = False
                 break
             else:
-                if gameFieldNumbers[indexDirectory[cell]] > 0:
-                    if gameField[indexDirectory[cell]] == "[?]":
+                if gameFieldNumbers[indexDirectory[cell.upper()]] > 0:
+                    if gameField[indexDirectory[cell.upper()]] == "[?]":
                         countSafeCell -= 1
-                    gameField[indexDirectory[cell]] = f"/{gameFieldNumbers[indexDirectory[cell]]}/"
+                    gameField[indexDirectory[cell.upper()]] = f"/{gameFieldNumbers[indexDirectory[cell.upper()]]}/"
                     break
                 else:
-                    Null = [indexDirectory[cell]]
+                    Null = [indexDirectory[cell.upper()]]
                     while Null:
-                        gameFieldNumbers[indexDirectory[cell]] = "_"
+                        gameFieldNumbers[indexDirectory[cell.upper()]] = "_"
                         if Null[0] % 10 == 9:
                             for i in constantCheck:
                                 if i != -11 and i != 9 and i != -1 and 0 <= Null[0] - i < 100:
